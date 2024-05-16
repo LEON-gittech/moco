@@ -119,6 +119,13 @@ parser.add_argument(
     help="path to latest checkpoint (default: none)",
 )
 parser.add_argument(
+    "--pretrained",
+    default="",
+    type=str,
+    metavar="PATH",
+    help="path to pretrained model parameter (default: none)",
+)
+parser.add_argument(
     "--world-size",
     default=-1,
     type=int,
@@ -215,6 +222,15 @@ def main():
         # Simply call main_worker function
         main_worker(args.gpu, ngpus_per_node, args)
 
+def clean_state_dict(state_dict, prefix='module.'):
+    """
+    去掉state_dict中的指定前缀。
+    """
+    keys = sorted([key for key in state_dict if key.startswith(prefix)])
+    for key in keys:
+        state_dict[key.replace(prefix, '')] = state_dict[key]
+        del state_dict[key]
+    return state_dict
 
 def main_worker(gpu, ngpus_per_node, args):
     args.gpu = gpu
@@ -254,6 +270,16 @@ def main_worker(gpu, ngpus_per_node, args):
         args.mlp,
     )
     print(model)
+
+    # optionally load pretrained model
+    if args.pretrained:
+        if os.path.isfile(args.pretrained):
+            checkpoint = torch.load(args.pretrained)
+            state_dict = clean_state_dict(checkpoint["state_dict"],"module.encoder_q.")
+            model.encoder_q.load_state_dict(state_dict)
+            model.encoder_k.load_state_dict(state_dict)
+        else:
+            print("=> no checkpoint found at '{}'".format(args.pretrained))
 
     if args.distributed:
         # For multiprocessing distributed, DistributedDataParallel constructor
@@ -509,7 +535,8 @@ def accuracy(output, target, topk=(1,)):
 
         res = []
         for k in topk:
-            correct_k = correct[:k].view(-1).float().sum(0, keepdim=True)
+            print("correct",correct.shape)
+            correct_k = correct[:k].reshape(-1).float().sum(0, keepdim=True)
             res.append(correct_k.mul_(100.0 / batch_size))
         return res
 
