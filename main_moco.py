@@ -523,7 +523,7 @@ def adjust_learning_rate(optimizer, epoch, args):
         param_group["lr"] = lr
 
 
-def accuracy(output, target, topk=(1,)):
+def accuracy(output: torch.Tensor, target: torch.Tensor, topk=(1,)):
     """Computes the accuracy over the k top predictions for the specified values of k"""
     with torch.no_grad():
         maxk = max(topk)
