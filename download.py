@@ -15,7 +15,7 @@ def get_img_roomid(data):
         os.mkdir(f'{root}/{data["room_id"]}/')
         os.mkdir(f'{root}/{data["room_id"]}/{data["object1"]}')
         os.mkdir(f'{root}/{data["room_id"]}/{data["object2"]}')
-    else: return None
+    if(len(os.lisdir(f'{root}/{data["room_id"]}/{data["object1"]}'))>0 and len(os.lisdir(f'{root}/{data["room_id"]}/{data["object2"]}'))>0): return None
     urls1, urls2 = json.loads(data["urls1"]), json.loads(data["urls2"])
     for url in urls1:
         try:
@@ -54,7 +54,7 @@ def get_img_roomid(data):
 import multiprocessing
 # 使用多进程池来下载图像
 def download_images(data):
-    with multiprocessing.Pool(20) as pool:
+    with multiprocessing.Pool(50) as pool:
         pool.map(get_img_roomid, data)
 
 # 调用函数开始多进程下载
