@@ -54,7 +54,7 @@ def get_img_roomid(data):
 import multiprocessing
 # 使用多进程池来下载图像
 def download_images(data):
-    with multiprocessing.Pool() as pool:
+    with multiprocessing.Pool(20) as pool:
         pool.map(get_img_roomid, data)
 
 # 调用函数开始多进程下载
