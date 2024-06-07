@@ -2,28 +2,29 @@ import json
 
 with open("/mnt/bn/data-tns-live-llm/leon/experiments/llm/face/processed_pair_face_2m.json", "r") as f:
     data = json.loads(f.read())
+    print(len(data))
 
 import requests
 import uuid
 import os
 
-root = "/mnt/bn/data-tns-live-llm/leon/experiments/llm/face/second_stage_train_imgs_2m"
+root = "/mnt/bn/data-tns-live-llm/leon/experiments/llm/face/second_stage_train_imgs_2million"
 if not os.path.exists(f'{root}'): os.mkdir(f'{root}')
 
 def get_img_roomid(data):
-    if not os.path.exists(f'{root}/{data["room_id"]}/'): 
-        os.mkdir(f'{root}/{data["room_id"]}/')
-        os.mkdir(f'{root}/{data["room_id"]}/{data["object1"]}')
-        os.mkdir(f'{root}/{data["room_id"]}/{data["object2"]}')
-    if(len(os.lisdir(f'{root}/{data["room_id"]}/{data["object1"]}'))>0 and len(os.lisdir(f'{root}/{data["room_id"]}/{data["object2"]}'))>0): return None
+    # if not os.path.exists(f'{root}/{data["room_id"]}/'): 
+    #     os.mkdir(f'{root}/{data["room_id"]}/')
+    #     os.mkdir(f'{root}/{data["room_id"]}/{data["object1"]}')
+    #     os.mkdir(f'{root}/{data["room_id"]}/{data["object2"]}')
+    # else: return None
     urls1, urls2 = json.loads(data["urls1"]), json.loads(data["urls2"])
-    for url in urls1:
+    for i, url in enumerate(urls1):
         try:
             response = requests.get(url)
             # 检查请求是否成功
             if response.status_code == 200:
                 # 使用uuid生成唯一的文件名
-                file_name = str(uuid.uuid4()) + '.jpg'
+                file_name = str(i) + '.jpg'
                 # 构建文件保存路径
                 file_path = os.path.join(f'{root}/{data["room_id"]}/{data["object1"]}', file_name)
                 # 将响应内容写入文件
@@ -34,13 +35,13 @@ def get_img_roomid(data):
         except Exception as e:
             print(f'图片下载失败，错误：{e}')
 
-    for url in urls2:
+    for i, url in enumerate(urls2):
         try:
             response = requests.get(url)
             # 检查请求是否成功
             if response.status_code == 200:
                 # 使用uuid生成唯一的文件名
-                file_name = str(uuid.uuid4()) + '.jpg'
+                file_name = str(i) + '.jpg'
                 # 构建文件保存路径
                 file_path = os.path.join(f'{root}/{data["room_id"]}/{data["object2"]}', file_name)
                 # 将响应内容写入文件
