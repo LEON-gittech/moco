@@ -16,7 +16,11 @@ def get_img_roomid(data):
         os.mkdir(f'{root}/{data["room_id"]}/')
         os.mkdir(f'{root}/{data["room_id"]}/{data["object1"]}')
         os.mkdir(f'{root}/{data["room_id"]}/{data["object2"]}')
+<<<<<<< HEAD
         
+=======
+    # else: return None
+>>>>>>> 941b80987ff8a48e9694d67c4c205804cceb1258
     urls1, urls2 = json.loads(data["urls1"]), json.loads(data["urls2"])
     for i, url in enumerate(urls1):
         try:
