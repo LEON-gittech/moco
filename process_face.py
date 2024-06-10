@@ -4,7 +4,7 @@ import argparse
 import numpy as np
 import sys
 import cv2
-sys.path.append("/opt/tiger/LLM/face")
+sys.path.append("/opt/tiger/moco")
 from fermion_core_thrift import *
 from base_thrift import *
 
@@ -117,8 +117,8 @@ import cv2
 import numpy as np
 from multiprocessing import Pool
 
-root = "/mnt/bn/data-tns-live-llm/leon/experiments/llm/face/second_stage_train_imgs"
-target_path = "/mnt/bn/data-tns-live-llm/leon/experiments/llm/face/tmp"
+root = "/mnt/bn/data-tns-live-llm/leon/experiments/llm/face/second_stage_train_imgs_2million"
+target_path = "/mnt/bn/data-tns-live-llm/leon/experiments/llm/face/cropped_second_stage_imgs_2million"
 if not os.path.exists(target_path): os.mkdir(target_path)
 # 定义处理单个图像的函数
 def process_image(data):
@@ -180,7 +180,7 @@ def process_image(data):
 
 # 使用多进程池来并行处理图像
 def parallel_process_images(paths):
-    with Pool(20) as pool:
+    with Pool() as pool:
         # 使用pool.map来并行处理每个图像
         results = pool.map(process_image, paths)
     return results
@@ -188,7 +188,7 @@ def parallel_process_images(paths):
 # paths = os.listdir(imgs_dic)
 # 调用函数开始多进程处理
 import json
-with open("/mnt/bn/data-tns-live-llm/leon/experiments/llm/face/processed_pair_face.json", "r") as f:
+with open("/mnt/bn/data-tns-live-llm/leon/experiments/llm/face/processed_pair_face_2m.json", "r") as f:
     data = json.loads(f.read())
 
 results = parallel_process_images(data)

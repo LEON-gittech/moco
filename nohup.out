@@ -1,0 +1,7 @@
+/usr/local/lib/python3.9/dist-packages/euler/hook.py:26: EulerDeprecatedWarning: Importing a thrift file without user's explicit intention had caused various troubles and is deprecated by now. Implicit installation of the import hook will be removed in Euler 2.0.
+Either state your intention by calling `euler.install_thrift_import_hook()`, or use `thriftpy2.load()` to manually load thrift files.
+  warnings.warn(msg, EulerDeprecatedWarning)
+/usr/local/lib/python3.9/dist-packages/euler/client.py:137: EulerDeprecatedWarning: Don't specify idc in PSM with `sd://p.s.m.service.${IDC}` format, otherwise it will cause abnormal behaviors in MS or Mesh. The right format is `sd://p.s.m?idc=${IDC}`.
+  warnings.warn(msg, errors.EulerDeprecatedWarning)
+/usr/local/lib/python3.9/dist-packages/euler/client.py:143: EulerDeprecatedWarning: cluster not specified, by some history reasons, all clusters will be used without mesh mode, but only default cluster will be used in mesh mode. So we highly recommend to specify a cluster (e.g. default), like: `sd://product.service.module?cluster=default` to avoid confuse.
+  warnings.warn(msg, errors.EulerDeprecatedWarning)

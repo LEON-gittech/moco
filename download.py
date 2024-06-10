@@ -12,11 +12,11 @@ root = "/mnt/bn/data-tns-live-llm/leon/experiments/llm/face/second_stage_train_i
 if not os.path.exists(f'{root}'): os.mkdir(f'{root}')
 
 def get_img_roomid(data):
-    # if not os.path.exists(f'{root}/{data["room_id"]}/'): 
-    #     os.mkdir(f'{root}/{data["room_id"]}/')
-    #     os.mkdir(f'{root}/{data["room_id"]}/{data["object1"]}')
-    #     os.mkdir(f'{root}/{data["room_id"]}/{data["object2"]}')
-    # else: return None
+    if not os.path.exists(f'{root}/{data["room_id"]}/'): 
+        os.mkdir(f'{root}/{data["room_id"]}/')
+        os.mkdir(f'{root}/{data["room_id"]}/{data["object1"]}')
+        os.mkdir(f'{root}/{data["room_id"]}/{data["object2"]}')
+        
     urls1, urls2 = json.loads(data["urls1"]), json.loads(data["urls2"])
     for i, url in enumerate(urls1):
         try:
